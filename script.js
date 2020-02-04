@@ -4,32 +4,42 @@ const apiKey = "c27ba2815803926d4006fd773d06f781";
 
 let cityName = "San Diego";
 
+let weatherIconCode;
+
 let lat;
 
 let lon;
 
-const weatherIconUrl = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+let UVindex;
 
-let weatherIconCode;
+const weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
 
 // Variables for API query calls
-const currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&APPID=" + apiKey;
+const currentWeatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&APPID=" + apiKey;
 
-const fiveDayForcastAPI = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=" + apiKey;
+const fiveDayForcastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&APPID=" + apiKey;
 
-const uvIndexAPI = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
+// const uvIndexAPI = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
 
 // Moment for calender date
 const currentDate = moment().format("dddd[,] MMMM Do YYYY");
 console.log(currentDate);
 
 
-const weatherIconLink = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png"
-
 function getAPI(api) {
     const queryURL = api
     $.get(queryURL).then(function(res) {
-        console.log (res);
+        if (res.coord) {
+            lon = res.coord.lon;
+            lat = res.coord.lat;
+        }
+        else if (res.city.coord) {
+            lon = res.city.coord.lon;
+            lat = res.city.coord.lat;
+        }
+        $.get("http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon).then(function(resUV) {
+            UVindex = resUV.value;
+        });
     });
 }
 
