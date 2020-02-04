@@ -7,9 +7,40 @@
     <title>Document</title>
     <link rel="stylesheet" href="styles/reset.css">
     <link rel="stylesheet" href="styles/style.css">
-    
+    <link href="https://fonts.googleapis.com/css?family=Michroma&display=swap" rel="stylesheet">
 </head>
 <body>
+    <section class="header">
+        <header>
+            <h1>Weather Dashboard</h1>
+            <h2 id="calender"></h2>
+            <h3 id="weather-comment"></h3>
+        </header>
+    </section>
+
+    <section class="main-content">
+        <aside class="sidebar">
+            <input type="text">
+            <div class="saved-city">
+                city
+            </div>
+            <div class="saved-city">
+                city
+            </div>
+            <div class="saved-city">
+                city
+            </div>
+        </aside class="sidebar">
+
+        <div class="current-weather">
+            <div id="current-city">San Diego</div>
+            <img id="curent-weather-icon" src="http://openweathermap.org/img/wn/10d@2x.png">
+            <div id="current-temperature">Temperature: 100F</div>
+            <div id="current-humidity">Humidity: 35%</div>
+            <div id="current-wind-speed">Wind Speed & Direction: 4 MPH SW</div>
+            <div id="current-uv-index">UV Index: 5.3</div>
+        </div>
+    </section>
 
     <!-- Loading scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js" integrity="sha256-H9jAz//QLkDOy/nzE9G4aYijQtkLt9FvGmdUTwBk6gs=" crossorigin="anonymous"></script>

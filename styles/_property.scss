@@ -2,3 +2,17 @@ $grey : #6b7c8f;
 $orange : #f7892f;
 $gold : #fac231;
 $lightBrown : #dcc8aa;
+
+$fontStyle : 'Michroma', sans-serif;
+
+@mixin flexCenter($direction) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin contentGrid() {
+    display: grid;
+    grid-template-columns: 3% 22% 72% 3%;
+}

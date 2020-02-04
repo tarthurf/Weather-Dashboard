@@ -1,1 +1,24 @@
 @import "property";
+
+.header {
+    @include flexCenter();
+    background: $orange;
+    color: $grey;
+    font-family: $fontStyle;
+}
+
+.main-content {
+    @include contentGrid();
+}
+
+.sidebar {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    @include flexCenter(column);
+}
+
+.current-weather {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    @include flexCenter()
+}

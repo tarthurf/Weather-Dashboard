@@ -45,3 +45,5 @@ function getAPI(api) {
 
 getAPI(currentWeatherAPI);
 getAPI(fiveDayForcastAPI);
+
+$("#calender").text(currentDate);
