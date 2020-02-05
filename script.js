@@ -33,6 +33,14 @@ const currentDate = moment().format("MMMM Do YYYY");
 
 
 // declaring html elements
+const currentWeatherEl = $(".current-weather")
+const cityEl = $(".current-city")
+const dateEl = $(".date")
+const currentIconEl = $(".current-weather-icon")
+const tempEl = $(".temperature")
+const humidityEl = $(".humidity")
+const windEl = $(".wind-speed")
+const uvIndexEl = $(".uv-index")
 
 
 // Ajax function for UV Index
@@ -51,18 +59,11 @@ async function getAPI(api) {
     .then(function(res) {
         sessionStorage.setItem("weatherData", JSON.stringify(res));
     })
-    getUVindex()
+    // getUVindex()
 }
 
-const currentWeatherEl = $(".current-weather")
-const cityEl = $(".current-city")
-const dateEl = $(".date")
-const currentIconEl = $(".current-weather-icon")
-const tempEl = $(".temperature")
-const humidityEl = $(".humidity")
-const windEl = $(".wind-speed")
-const uvIndexEl = $(".uv-index")
 
+// Function sets current weather elements
 function buildCurrentWeather() {
     getAPI(currentWeatherAPI, uvIndexCurrentAPI);
     weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
@@ -79,8 +80,10 @@ function buildCurrentWeather() {
     humidityEl.text(weatherData.main.humidity)
     windEl.text(weatherData.wind.speed)
     // currentWeatherEl
-}
+} // TODO: Fix weather icon and date, add UV index
 
+
+// Function to build weather elements for forecast
 function buildWeatherEl(x) {
     for (let i = 0; i < x; i++) {
         const newWeatherDiv = $("<div>")
@@ -89,8 +92,25 @@ function buildWeatherEl(x) {
     }
 }
 
-buildCurrentWeather();
-buildWeatherEl(5)
+const forecastDays = [4, 12, 20, 28, 36]
+
+function buildFutureWeather() {
+    getAPI(fiveDayForecastAPI)
+    weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
+    console.log(weatherData)
+    console.log(weatherData.list[4])
+    console.log(weatherData.list[12])
+    console.log(weatherData.list[20])
+    console.log(weatherData.list[28])
+    console.log(weatherData.list[36])
+}
+
+
+// buildCurrentWeather();
+// buildWeatherEl(5);
+buildFutureWeather();
+
+// "2020-02-05 21:00:00"
 
 $("#calender-day").text(currentDay);
 $("#calender-date").text(currentDate);
