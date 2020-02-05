@@ -1,7 +1,8 @@
 @import "property";
 
 .header {
-    @include flexCenter();
+    @include flexDirection(row);
+    @include flexJustAlign(center, center);
     background: $orange;
     color: $grey;
     font-family: $fontStyle;
@@ -12,13 +13,19 @@
 }
 
 .sidebar {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    @include flexCenter(column);
+    @include flexDirection(column);
+    @include columnStartEnd(2, 3);
+    @include rowStartEnd(1, auto);
+    @include flexJustAlign(flex-start, center);
 }
 
-.current-weather {
-    grid-column-start: 3;
-    grid-column-end: 4;
-    @include flexCenter()
+
+.weather {
+    @include columnStartEnd(3, 4);
+}
+
+.info {
+    @include flexDirection(row);
+    @include flexJustAlign(space-around, center);
+    flex-wrap: wrap;
 }

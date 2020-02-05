@@ -32,16 +32,33 @@
             </div>
         </aside class="sidebar">
 
-        <div class="current-weather">
-            <div id="current-city">San Diego</div>
-            <img id="curent-weather-icon" src="http://openweathermap.org/img/wn/10d@2x.png">
-            <div id="current-temperature">Temperature: 100F</div>
-            <div id="current-humidity">Humidity: 35%</div>
-            <div id="current-wind-speed">Wind Speed & Direction: 4 MPH SW</div>
-            <div id="current-uv-index">UV Index: 5.3</div>
+        <div class="weather">
+            <div class="current-weather info">
+                <div id="current-conditions">
+                    <div class="current-city">San Diego</div>
+                    <img class="curent-weather-icon" src="http://openweathermap.org/img/wn/10d@2x.png">
+                </div>
+
+                <div id="current-temperature">
+                    <div class="temperature">Temperature: 100F</div>
+                </div>
+
+                <div id="current-humidity">
+                    <div class="humidity">Humidity: 35%</div>
+                </div>
+
+                <div id="current-wind-speed">
+                    <div class="wind-speed">Wind Speed & Direction: 4 MPH SW</div>
+                </div>
+
+                <div id="current-uv-index">
+                    <div class="uv-index">UV Index: 5.3</div>
+                </div>
+            </div>   
+
         </div>
     </section>
-
+    
     <!-- Loading scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js" integrity="sha256-H9jAz//QLkDOy/nzE9G4aYijQtkLt9FvGmdUTwBk6gs=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

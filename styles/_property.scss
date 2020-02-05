@@ -5,14 +5,28 @@ $lightBrown : #dcc8aa;
 
 $fontStyle : 'Michroma', sans-serif;
 
-@mixin flexCenter($direction) {
+@mixin flexDirection($direction) {
     display: flex;
     flex-direction: $direction;
-    justify-content: center;
-    align-items: center;
+}
+
+@mixin flexJustAlign($justify, $align) {
+    justify-content: $justify;
+    align-items: $align;
 }
 
 @mixin contentGrid() {
     display: grid;
-    grid-template-columns: 3% 22% 72% 3%;
+    grid-template-columns: 3% 20% 74% 3%;
+    grid-template-rows: auto;
+}
+
+@mixin columnStartEnd($start, $end) {
+    grid-column-start: $start;
+    grid-column-end: $end;
+}
+
+@mixin rowStartEnd($start, $end) {
+    grid-row-start: $start;
+    grid-row-end: $end;
 }
