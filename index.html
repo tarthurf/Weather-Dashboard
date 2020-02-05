@@ -13,13 +13,16 @@
     <section class="header">
         <header>
             <h1>Weather Dashboard</h1>
-            <h2 id="calender"></h2>
+            <h2 id="calender-day"></h2>
+            <h2 id="calender-date"></h2>
             <h3 id="weather-comment"></h3>
         </header>
     </section>
 
     <section class="main-content">
+
         <aside class="sidebar">
+
             <input type="text">
             <div class="saved-city">
                 city
@@ -30,30 +33,27 @@
             <div class="saved-city">
                 city
             </div>
+
         </aside class="sidebar">
 
         <div class="weather">
+
             <div class="current-weather info">
-                <div id="current-conditions">
-                    <div class="current-city">San Diego</div>
-                    <img class="curent-weather-icon" src="http://openweathermap.org/img/wn/10d@2x.png">
-                </div>
 
-                <div id="current-temperature">
-                    <div class="temperature">Temperature: 100F</div>
+                <div class="current-city">San Diego
+                    <br>
+                    <span class="date">today</span>
                 </div>
+                <img class="curent-weather-icon" src="">
 
-                <div id="current-humidity">
-                    <div class="humidity">Humidity: 35%</div>
-                </div>
+                <div class="temperature">Temperature: 100F</div>
 
-                <div id="current-wind-speed">
-                    <div class="wind-speed">Wind Speed & Direction: 4 MPH SW</div>
-                </div>
+                <div class="humidity">Humidity: 35%</div>
 
-                <div id="current-uv-index">
-                    <div class="uv-index">UV Index: 5.3</div>
-                </div>
+                <div class="wind-speed">Wind Speed: 4 MPH</div>
+
+                <div class="uv-index">UV Index: 5.3</div>
+
             </div>   
 
         </div>
