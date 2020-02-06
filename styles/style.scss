@@ -27,5 +27,6 @@
 .info {
     @include flexDirection(row);
     @include flexJustAlign(space-around, center);
+    @include roundedBorder();
     flex-wrap: wrap;
 }

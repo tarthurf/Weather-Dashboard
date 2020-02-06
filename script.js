@@ -85,7 +85,7 @@ function displayForecastWeather(x) {
         cityDateEl.append(cityEl);
         const dateEl = ($("<p>").attr("id","date-" + i).text(moment().add(i + 1, "days").format("MMMM Do YYYY")));
         cityDateEl.append($("<br>")).append(dateEl);
-        const iconEl = ($("<img>").attr("src", "#"));
+        const iconEl = ($("<img>").attr({id: "icon-" + i ,src: "#"}));
         newWeatherEl.append(iconEl);
         const tempEl = ($("<p>").attr("id", "temp-" + i));
         newWeatherEl.append(tempEl);
@@ -100,6 +100,18 @@ function displayForecastWeather(x) {
 }
 
 
+function populateWeatherForecast(x) {
+    for (let i = 0; i < x.length; i++) {
+    //     const icon = "http://openweathermap.org/img/wn/" + x[i].weather.icon + "@2x.png"
+    //     $("#icon-" + i).attr("src", icon)   
+    $("#temp-" + i).text(x[i].main.temp)
+    $("#humid-" + i).text(x[i].main.humidity)
+    $("#wind-" + i).text(x[i].wind.speed)
+    }
+    
+}
+
+
 // Function sorts five day forecast and retrieves the object of each day at 12:00 only
 function sortForecast(forecastData) {
     const fiveDays = [];
@@ -110,6 +122,11 @@ function sortForecast(forecastData) {
         }
     }
     console.log(fiveDays)
+    for (let i = 0; i < fiveDays.length; i++) {
+        const icon = "http://openweathermap.org/img/wn/" + fiveDays[i].weather.icon + "@2x.png"
+        $("#icon-" + i).attr("src", icon)   
+    }
+    populateWeatherForecast(fiveDays)
     return fiveDays
 }
 
@@ -130,7 +147,7 @@ function getUVindexForecast(longitude, latitude) {
         for (let i = 0; i < uvForecastData.length; i++) {
             $("#uv-" + i).text(uvForecastData[i])
         }
-        });
+    });
 }
 
 
@@ -139,6 +156,8 @@ function getForecastWeatherAPI() {
     displayForecastWeather(5)
     $.get("http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
     .then(function(res) {
+        // res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict")
+        $(".city").text(res.city.name)
         lon = res.city.coord.lon;
         lat = res.city.coord.lat;
         console.log(res);
