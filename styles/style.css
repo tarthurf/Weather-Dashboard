@@ -1,3 +1,8 @@
+h1 {
+  font-size: 36px;
+  font-weight: 500;
+}
+
 .header {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -49,6 +54,12 @@
 }
 
 .weather {
+  -ms-grid-column: 3;
+      grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.forecast-weather {
   -ms-grid-column: 3;
       grid-column-start: 3;
   grid-column-end: 4;

@@ -1,5 +1,10 @@
 @import "property";
 
+h1 {
+    font-size: 36px;
+    font-weight: 500;
+}
+
 .header {
     @include flexDirection(row);
     @include flexJustAlign(center, center);
@@ -21,6 +26,10 @@
 
 
 .weather {
+    @include columnStartEnd(3, 4);
+}
+
+.forecast-weather {
     @include columnStartEnd(3, 4);
 }
 

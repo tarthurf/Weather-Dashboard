@@ -1,7 +1,8 @@
 // Creating variables
 const apiKey = "c27ba2815803926d4006fd773d06f781";
 
-let cityName = "San Diego";
+
+let cityName = "san diego";
 
 // let weatherIconCode;
 
@@ -22,11 +23,14 @@ const fiveDayForecastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" 
 // const uvIndexForecastAPI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5"
 
 
-// Moment for calender date
+// Momentjs for calender date
 const currentDay = moment().format("dddd");
 
 const currentDate = moment().format("MMMM Do, YYYY");
 
+$("#calender-day").text(currentDay);
+
+$("#calender-date").text(currentDate);
 
 // This function populates the current weather element
 function displayCurrentWeather(weatherData) {
@@ -76,9 +80,10 @@ getCurrentWeatherAPI()
 
 // Function to build weather elements for forecast
 function displayForecastWeather(x) {
+    $(".forecast-weather").empty();
     for (let i = 0; i < x; i++) {
         const newWeatherEl = ($("<div>").attr("id", "weather-" + i).addClass("info"));
-        $(".weather").append(newWeatherEl);
+        $(".forecast-weather").append(newWeatherEl);
         const cityDateEl = ($("<div>").attr("id", "city-date-" + i));
         newWeatherEl.append(cityDateEl)
         const cityEl = ($("<p>").addClass("city"));
@@ -95,18 +100,17 @@ function displayForecastWeather(x) {
         newWeatherEl.append(windEl);
         const uvEl = ($("<p>").attr("id", "uv-" + i));
         newWeatherEl.append(uvEl);
-        
     }
 }
 
 
 function populateWeatherForecast(x) {
     for (let i = 0; i < x.length; i++) {
-    //     const icon = "http://openweathermap.org/img/wn/" + x[i].weather.icon + "@2x.png"
-    //     $("#icon-" + i).attr("src", icon)   
-    $("#temp-" + i).text(x[i].main.temp)
-    $("#humid-" + i).text(x[i].main.humidity)
-    $("#wind-" + i).text(x[i].wind.speed)
+        //     const icon = "http://openweathermap.org/img/wn/" + x[i].weather.icon + "@2x.png"
+        //     $("#icon-" + i).attr("src", icon)   
+        $("#temp-" + i).text(x[i].main.temp)
+        $("#humid-" + i).text(x[i].main.humidity)
+        $("#wind-" + i).text(x[i].wind.speed)
     }
     
 }
@@ -170,6 +174,30 @@ getForecastWeatherAPI()
 
 // "2020-02-05 21:00:00"
 
+$(document).ready(function() {
+    let savedCities;
+    savedCities = JSON.parse(localStorage.getItem("Search History"))
+    console.log(savedCities)
+    const cityInput = $('.target-city');
+    cityInput.bind('keydown',function(e){
+        if(e.keyCode == 13) {
+            cityName = cityInput.val()
+            cityName.trim()
+            savedCities.unshift(cityName);
+            localStorage.setItem("Search History", JSON.stringify(savedCities))
+            getCurrentWeatherAPI();
+            getForecastWeatherAPI();
+            displayCities()
+        }
+    });
 
-$("#calender-day").text(currentDay);
-$("#calender-date").text(currentDate);
+    function displayCities() {
+        savedCityEl = $(".saved-cities")
+        savedCityEl.empty();
+        for (let i = 0; i < savedCities.length && i < 10; i++) {
+            const city = $("<p>").text(savedCities[i])
+            savedCityEl.append(city)
+        }
+    }
+    displayCities()
+});
