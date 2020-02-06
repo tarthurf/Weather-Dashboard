@@ -28,16 +28,17 @@ const currentDay = moment().format("dddd");
 const currentDate = moment().format("MMMM Do, YYYY");
 
 
-// Ajax function for UV Index
-function getUVindexForecast(longitude, latitude) {
-    lon = longitude;
-    lat = latitude;
-    $.get("http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5")
-    .then(function(resUV) {
-        console.log(resUV)
-    });
+// This function populates the current weather element
+function displayCurrentWeather(weatherData) {
+    $(".current-city").text(weatherData.name)
+    $(".date").text(moment().format("MMMM Do YYYY"));
+    $(".temperature").text(weatherData.main.temp + "")
+    $(".humidity").text(weatherData.main.humidity)
+    $(".wind-speed").text(weatherData.wind.speed)
 }
 
+
+// Ajax call for current uv index
 function getUVindexCurrent(longitude, latitude) {
     lon = longitude;
     lat = latitude;
@@ -50,29 +51,53 @@ function getUVindexCurrent(longitude, latitude) {
     });
 }
 
-// Function call for 
-function getAPI(api) {
-    $.get(api)
+// Ajax call for current weather
+function getCurrentWeatherAPI() {
+    $.get("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
     .then(function(res) {
-        if (res.coord) {
-            lon = res.coord.lon;
-            lat = res.coord.lat;
-        }
-        else if (res.city.coord) {
-            lon = res.city.coord.lon;
-            lat = res.city.coord.lat;
-        }
-        console.log(res);
+        lon = res.coord.lon;
+        lat = res.coord.lat;
+        // console.log(res);
         const icon = "http://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png"
         $(".current-weather-icon").attr("src", icon)
-        console.log(icon)
-        lat = lat;
-        lon = lon;
+        // console.log(icon)
+        // lat = lat;
+        // lon = lon;
         getUVindexCurrent(lon, lat)
         displayCurrentWeather(res)
-    })
+    });
 }
-getAPI(currentWeatherAPI)
+getCurrentWeatherAPI()
+
+
+
+
+
+
+// Function to build weather elements for forecast
+function displayForecastWeather(x) {
+    for (let i = 0; i < x; i++) {
+        const newWeatherEl = ($("<div>").attr("id", "weather-" + i).addClass("info"));
+        $(".weather").append(newWeatherEl);
+        const cityDateEl = ($("<div>").attr("id", "city-date-" + i));
+        newWeatherEl.append(cityDateEl)
+        const cityEl = ($("<p>").addClass("city"));
+        cityDateEl.append(cityEl);
+        const dateEl = ($("<p>").attr("id","date-" + i).text(moment().add(i + 1, "days").format("MMMM Do YYYY")));
+        cityDateEl.append($("<br>")).append(dateEl);
+        const iconEl = ($("<img>").attr("src", "#"));
+        newWeatherEl.append(iconEl);
+        const tempEl = ($("<p>").attr("id", "temp-" + i));
+        newWeatherEl.append(tempEl);
+        const humidEl = ($("<p>").attr("id", "humid-" + i));
+        newWeatherEl.append(humidEl);
+        const windEl = ($("<p>").attr("id", "wind-" + i));
+        newWeatherEl.append(windEl);
+        const uvEl = ($("<p>").attr("id", "uv-" + i));
+        newWeatherEl.append(uvEl);
+        
+    }
+}
 
 
 // Function sorts five day forecast and retrieves the object of each day at 12:00 only
@@ -89,40 +114,40 @@ function sortForecast(forecastData) {
 }
 
 
-function displayCurrentWeather(weatherData) {
-    $(".current-city").text(weatherData.name)
-    $(".date").text(moment().format("MMMM Do YYYY"));
-    $(".temperature").text(weatherData.main.temp + "")
-    $(".humidity").text(weatherData.main.humidity)
-    $(".wind-speed").text(weatherData.wind.speed)
-}
-
-
-// Function to build weather elements for forecast
-function displayForecastWeather(x) {
-        for (let i = 0; i < x; i++) {
-            const newWeatherEl = ($("<div>").attr("id", "weather-" + i + " info"));
-            $(".weather").append(newWeatherEl);
-            const cityDateEl = ($("<div>").attr("id", "city-date-" + i));
-            newWeatherEl.append(cityDateEl)
-            const cityEl = ($("<p>").addClass("city"));
-            cityDateEl.append(cityEl);
-            const dateEl = ($("<p>").addClass("date"));
-            cityDateEl.append($("<br>")).append(dateEl);
-            const iconEl = ($("<img>").attr("src", "#"));
-            newWeatherEl.append(iconEl);
-            const tempEl = ($("<p>").attr("id", "temp-" + i));
-            newWeatherEl.append(tempEl);
-            const humidEl = ($("<p>").attr("id", "humid-" + i));
-            newWeatherEl.append(humidEl);
-            const windEl = ($("<p>").attr("id", "wind-" + i));
-            newWeatherEl.append(windEl);
-            const uvEl = ($("<p>").attr("id", "uv-" + i));
-            newWeatherEl.append(uvEl);
-            
+// Ajax function for UV Index forecast
+function getUVindexForecast(longitude, latitude) {
+    lon = longitude;
+    lat = latitude;
+    $.get("http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=4")
+    .then(function(resUV) {
+        const uvForecastData = []
+        for (let i = 0; i < resUV.length; i++) {
+            const uvData = resUV[i].value
+            uvForecastData.push(uvData)
         }
+        console.log(uvForecastData)
+        // return uvForecastData;
+        for (let i = 0; i < uvForecastData.length; i++) {
+            $("#uv-" + i).text(uvForecastData[i])
+        }
+        });
 }
-displayForecastWeather(5)
+
+
+// Function call for five day weather forecast
+function getForecastWeatherAPI() {
+    displayForecastWeather(5)
+    $.get("http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
+    .then(function(res) {
+        lon = res.city.coord.lon;
+        lat = res.city.coord.lat;
+        console.log(res);
+        getUVindexForecast(lon, lat)
+        sortForecast(res)
+    });
+}
+getForecastWeatherAPI()
+
 
 // "2020-02-05 21:00:00"
 
