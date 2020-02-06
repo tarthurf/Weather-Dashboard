@@ -3,13 +3,13 @@ const apiKey = "c27ba2815803926d4006fd773d06f781";
 
 let cityName = "San Diego";
 
-let weatherIconCode;
+// let weatherIconCode;
 
-let UVindex;
+// let UVindex;
 
 let tempUnit = ["metric", "imperial"]
 
-const weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
+// const weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
 
 
 // Variables for API query calls
@@ -25,19 +25,8 @@ const fiveDayForecastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" 
 // Moment for calender date
 const currentDay = moment().format("dddd");
 
-const currentDate = moment().format("MMMM Do YYYY");
+const currentDate = moment().format("MMMM Do, YYYY");
 
-
-// declaring html elements
-const currentWeatherEl = $(".current-weather")
-const cityEl = $(".current-city")
-const dateEl = $(".date")
-const currentIconEl = $(".current-weather-icon")
-const tempEl = $(".temperature")
-const humidityEl = $(".humidity")
-const windEl = $(".wind-speed")
-const uvIndexEl = $(".uv-index")
-// TODO: 
 
 // Ajax function for UV Index
 function getUVindexForecast(longitude, latitude) {
@@ -55,6 +44,9 @@ function getUVindexCurrent(longitude, latitude) {
     $.get("http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon)
     .then(function(resUV) {
         console.log(resUV)
+        const uvIndex = resUV.value
+        $(".uv-index").text(uvIndex)
+        return uvIndex
     });
 }
 
@@ -71,17 +63,20 @@ function getAPI(api) {
             lat = res.city.coord.lat;
         }
         console.log(res);
+        const icon = "http://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png"
+        $(".current-weather-icon").attr("src", icon)
+        console.log(icon)
         lat = lat;
         lon = lon;
         getUVindexCurrent(lon, lat)
+        buildCurrentWeather(res)
     })
 }
-getAPI(fiveDayForecastAPI)
+getAPI(currentWeatherAPI)
 
 
-// Function sets current weather elements
-// TODO: use this to sort the JSON object and make it manageable
-function sortForcast(forecastData) {
+// Function sorts five day forecast and retrieves the object of each day at 12:00 only
+function sortForecast(forecastData) {
     const fiveDays = [];
     for (let i = 0; i < forecastData.list.length; i++) {
         const forecastObject = forecastData.list[i].dt_txt	
@@ -90,35 +85,29 @@ function sortForcast(forecastData) {
         }
     }
     console.log(fiveDays)
+    return fiveDays
 }
 
 
 function buildCurrentWeather(weatherData) {
-    // weatherIconCode = weatherData.weather[0].icon
-    cityEl.text(weatherData.name)
-    dateEl.text(currentDate)
-    iconCode = weatherData.weather[0].icon
-    console.log(weatherData.weather[0].icon)
-    currentIconEl.attr("src", "http://openweathermap.org/img/wn/" + iconCode.toString() + "@2x.png")
-    tempEl.text(weatherData.main.temp + "")
-    humidityEl.text(weatherData.main.humidity)
-    windEl.text(weatherData.wind.speed)
-} // TODO: Fix weather icon and date, add UV index
+    $(".current-city").text(weatherData.name)
+    $(".date").text(moment().format("MMMM Do YYYY"));
+    $(".temperature").text(weatherData.main.temp + "")
+    $(".humidity").text(weatherData.main.humidity)
+    $(".wind-speed").text(weatherData.wind.speed)
+}
 
 
 // Function to build weather elements for forecast
-function buildWeatherEl(res) {
-
-    for (let i = 0; i < x; i++) {
-        const newWeatherDiv = $("<div>")
-        newWeatherDiv.addClass("weather" + i + " info");
-        $(".weather").append(newWeatherDiv)
-    }
+function buildWeatherEl(x) {
+        for (let i = 0; i < x.length; i++) {
+            const newWeatherDiv = $("<div>")
+            newWeatherDiv.addClass("weather" + i + " info");
+            $(".weather").append(newWeatherDiv)
+            const 
+        }
 }
 
-// buildCurrentWeather();
-// buildWeatherEl(5);
-// buildFutureWeather();
 
 // "2020-02-05 21:00:00"
 
