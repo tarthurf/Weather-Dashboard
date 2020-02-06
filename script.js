@@ -5,10 +5,6 @@ let cityName = "San Diego";
 
 let weatherIconCode;
 
-let lat;
-
-let lon;
-
 let UVindex;
 
 let tempUnit = ["metric", "imperial"]
@@ -21,9 +17,9 @@ const currentWeatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + 
 
 const fiveDayForecastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey;
 
-const uvIndexCurrentAPI = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
+// const uvIndexCurrentAPI = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
 
-const uvIndexForecastAPI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5"
+// const uvIndexForecastAPI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5"
 
 
 // Moment for calender date
@@ -41,50 +37,78 @@ const tempEl = $(".temperature")
 const humidityEl = $(".humidity")
 const windEl = $(".wind-speed")
 const uvIndexEl = $(".uv-index")
-
+// TODO: 
 
 // Ajax function for UV Index
-async function getUVindex(api) {
-    await $.get(api)
+function getUVindexForecast(longitude, latitude) {
+    lon = longitude;
+    lat = latitude;
+    $.get("http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5")
     .then(function(resUV) {
-        sessionStorage.setItem("uvData", JSON.stringify(resUV));
+        console.log(resUV)
     });
 }
 
+function getUVindexCurrent(longitude, latitude) {
+    lon = longitude;
+    lat = latitude;
+    $.get("http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon)
+    .then(function(resUV) {
+        console.log(resUV)
+    });
+}
 
 // Function call for 
-async function getAPI(api) {
-    const queryURL = api
-    await $.get(queryURL)
+function getAPI(api) {
+    $.get(api)
     .then(function(res) {
-        sessionStorage.setItem("weatherData", JSON.stringify(res));
+        if (res.coord) {
+            lon = res.coord.lon;
+            lat = res.coord.lat;
+        }
+        else if (res.city.coord) {
+            lon = res.city.coord.lon;
+            lat = res.city.coord.lat;
+        }
+        console.log(res);
+        lat = lat;
+        lon = lon;
+        getUVindexCurrent(lon, lat)
     })
-    // getUVindex()
 }
+getAPI(fiveDayForecastAPI)
 
 
 // Function sets current weather elements
-function buildCurrentWeather() {
-    getAPI(currentWeatherAPI, uvIndexCurrentAPI);
-    weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
-    // UVindex = JSON.parse(sessionStorage.getItem("uvData"));
-    weatherIconCode = weatherData.weather[0].icon
-    console.log(`Weather Icon Code: ${weatherIconCode}`)
-    console.log(`Weather Icon Url: ${weatherIconUrl}`)
-    console.log(weatherData);
-    // console.log(UVindex);
+// TODO: use this to sort the JSON object and make it manageable
+function sortForcast(forecastData) {
+    const fiveDays = [];
+    for (let i = 0; i < forecastData.list.length; i++) {
+        const forecastObject = forecastData.list[i].dt_txt	
+        if (!forecastObject.startsWith(moment().format("yyyy-mm-dd")) && forecastObject.endsWith("12:00:00")) {
+            fiveDays.push(forecastData.list[i]);
+        }
+    }
+    console.log(fiveDays)
+}
+
+
+function buildCurrentWeather(weatherData) {
+    // weatherIconCode = weatherData.weather[0].icon
     cityEl.text(weatherData.name)
     dateEl.text(currentDate)
-    currentIconEl.attr("src", weatherIconUrl)
+    iconCode = weatherData.weather[0].icon
+    console.log(weatherData.weather[0].icon)
+    currentIconEl.attr("src", "http://openweathermap.org/img/wn/" + iconCode.toString() + "@2x.png")
     tempEl.text(weatherData.main.temp + "")
     humidityEl.text(weatherData.main.humidity)
     windEl.text(weatherData.wind.speed)
-    // currentWeatherEl
 } // TODO: Fix weather icon and date, add UV index
 
 
 // Function to build weather elements for forecast
-function buildWeatherEl(x) {
+function buildWeatherEl(res) {
+
     for (let i = 0; i < x; i++) {
         const newWeatherDiv = $("<div>")
         newWeatherDiv.addClass("weather" + i + " info");
@@ -92,25 +116,12 @@ function buildWeatherEl(x) {
     }
 }
 
-const forecastDays = [4, 12, 20, 28, 36]
-
-function buildFutureWeather() {
-    getAPI(fiveDayForecastAPI)
-    weatherData = JSON.parse(sessionStorage.getItem("weatherData"));
-    console.log(weatherData)
-    console.log(weatherData.list[4])
-    console.log(weatherData.list[12])
-    console.log(weatherData.list[20])
-    console.log(weatherData.list[28])
-    console.log(weatherData.list[36])
-}
-
-
 // buildCurrentWeather();
 // buildWeatherEl(5);
-buildFutureWeather();
+// buildFutureWeather();
 
 // "2020-02-05 21:00:00"
+
 
 $("#calender-day").text(currentDay);
 $("#calender-date").text(currentDate);
