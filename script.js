@@ -69,7 +69,7 @@ function getAPI(api) {
         lat = lat;
         lon = lon;
         getUVindexCurrent(lon, lat)
-        buildCurrentWeather(res)
+        displayCurrentWeather(res)
     })
 }
 getAPI(currentWeatherAPI)
@@ -89,7 +89,7 @@ function sortForecast(forecastData) {
 }
 
 
-function buildCurrentWeather(weatherData) {
+function displayCurrentWeather(weatherData) {
     $(".current-city").text(weatherData.name)
     $(".date").text(moment().format("MMMM Do YYYY"));
     $(".temperature").text(weatherData.main.temp + "")
@@ -99,15 +99,30 @@ function buildCurrentWeather(weatherData) {
 
 
 // Function to build weather elements for forecast
-function buildWeatherEl(x) {
-        for (let i = 0; i < x.length; i++) {
-            const newWeatherDiv = $("<div>")
-            newWeatherDiv.addClass("weather" + i + " info");
-            $(".weather").append(newWeatherDiv)
-            const 
+function displayForecastWeather(x) {
+        for (let i = 0; i < x; i++) {
+            const newWeatherEl = ($("<div>").attr("id", "weather-" + i + " info"));
+            $(".weather").append(newWeatherEl);
+            const cityDateEl = ($("<div>").attr("id", "city-date-" + i));
+            newWeatherEl.append(cityDateEl)
+            const cityEl = ($("<p>").addClass("city"));
+            cityDateEl.append(cityEl);
+            const dateEl = ($("<p>").addClass("date"));
+            cityDateEl.append($("<br>")).append(dateEl);
+            const iconEl = ($("<img>").attr("src", "#"));
+            newWeatherEl.append(iconEl);
+            const tempEl = ($("<p>").attr("id", "temp-" + i));
+            newWeatherEl.append(tempEl);
+            const humidEl = ($("<p>").attr("id", "humid-" + i));
+            newWeatherEl.append(humidEl);
+            const windEl = ($("<p>").attr("id", "wind-" + i));
+            newWeatherEl.append(windEl);
+            const uvEl = ($("<p>").attr("id", "uv-" + i));
+            newWeatherEl.append(uvEl);
+            
         }
 }
-
+displayForecastWeather(5)
 
 // "2020-02-05 21:00:00"
 
