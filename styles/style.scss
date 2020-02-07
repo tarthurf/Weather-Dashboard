@@ -1,5 +1,9 @@
 @import "property";
 
+body {
+    background: $light;
+}
+
 h1 {
     font-size: 36px;
     font-weight: 500;
@@ -14,28 +18,36 @@ h1 {
 }
 
 .main-content {
-    @include contentGrid();
+    @include flexDirection(row);
+    
 }
 
 .sidebar {
     @include flexDirection(column);
-    @include columnStartEnd(2, 3);
-    @include rowStartEnd(1, auto);
+    // @include columnStartEnd(2, 3);
+    // @include rowStartEnd(auto, auto);
     @include flexJustAlign(flex-start, center);
 }
 
+.saved-cities {
+    p {
+        @include roundedBorder();
+    }
+}
 
 .weather {
-    @include columnStartEnd(3, 4);
+    @include flexDirection(row);
+    // @include columnStartEnd(3, 4);
 }
 
 .forecast-weather {
-    @include columnStartEnd(3, 4);
+    // @include flexDirection(column);
+    // @include columnStartEnd(3, 4);
 }
 
 .info {
     @include flexDirection(row);
     @include flexJustAlign(space-around, center);
     @include roundedBorder();
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
 }

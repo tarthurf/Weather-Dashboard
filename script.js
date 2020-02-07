@@ -108,9 +108,9 @@ function populateWeatherForecast(x) {
     for (let i = 0; i < x.length; i++) {
         //     const icon = "http://openweathermap.org/img/wn/" + x[i].weather.icon + "@2x.png"
         //     $("#icon-" + i).attr("src", icon)   
-        $("#temp-" + i).text(x[i].main.temp)
-        $("#humid-" + i).text(x[i].main.humidity)
-        $("#wind-" + i).text(x[i].wind.speed)
+        $("#temp-" + i).before("Temp:").text(x[i].main.temp)
+        $("#humid-" + i).before("Humidity:").text(x[i].main.humidity)
+        $("#wind-" + i).before("Wind:").text(x[i].wind.speed)
     }
     
 }
@@ -181,13 +181,16 @@ $(document).ready(function() {
     const cityInput = $('.target-city');
     cityInput.bind('keydown',function(e){
         if(e.keyCode == 13) {
-            cityName = cityInput.val()
-            cityName.trim()
-            savedCities.unshift(cityName);
-            localStorage.setItem("Search History", JSON.stringify(savedCities))
-            getCurrentWeatherAPI();
-            getForecastWeatherAPI();
-            displayCities()
+            function generateWeatherDashboard() {
+                cityName = cityInput.val()
+                if (cityName == "") return;
+                cityName.trim()
+                savedCities.unshift(cityName);
+                localStorage.setItem("Search History", JSON.stringify(savedCities))
+                getCurrentWeatherAPI();
+                getForecastWeatherAPI();
+                displayCities()
+            } generateWeatherDashboard();
         }
     });
 
@@ -200,4 +203,9 @@ $(document).ready(function() {
         }
     }
     displayCities()
+
+
+    // TODO: add functionality to p tag clicks
+    // $(".saved-cities").children().on("click", function() {
+    // })
 });
