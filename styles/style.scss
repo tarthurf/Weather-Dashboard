@@ -1,53 +1,14 @@
 @import "property";
 
-body {
-    background: $light;
-}
-
-h1 {
-    font-size: 36px;
-    font-weight: 500;
-}
-
-.header {
-    @include flexDirection(row);
-    @include flexJustAlign(center, center);
+.hero-body {
     background: $orange;
-    color: $grey;
     font-family: $fontStyle;
 }
 
 .main-content {
-    @include flexDirection(row);
-    
+    background: $light;
 }
 
-.sidebar {
-    @include flexDirection(column);
-    // @include columnStartEnd(2, 3);
-    // @include rowStartEnd(auto, auto);
-    @include flexJustAlign(flex-start, center);
-}
-
-.saved-cities {
-    p {
-        @include roundedBorder();
-    }
-}
-
-.weather {
-    @include flexDirection(row);
-    // @include columnStartEnd(3, 4);
-}
-
-.forecast-weather {
-    // @include flexDirection(column);
-    // @include columnStartEnd(3, 4);
-}
-
-.info {
-    @include flexDirection(row);
-    @include flexJustAlign(space-around, center);
-    @include roundedBorder();
-    // flex-wrap: wrap;
+.card {
+    margin-bottom: 5px;
 }

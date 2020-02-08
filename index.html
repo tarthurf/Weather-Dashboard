@@ -6,55 +6,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/style.css">
     <link href="https://fonts.googleapis.com/css?family=Michroma&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <section class="header">
-        <header>
-            <h1>Weather Dashboard</h1>
-            <h2 id="calender-day"></h2>
-            <h2 id="calender-date"></h2>
-            <h3 id="weather-comment"></h3>
+    <section class="hero">
+        <header class="hero-body">
+            <h1 class="title">Weather Dashboard</h1>
+            <h2 class="subtitle" id="calender-date"></h2>
         </header>
     </section>
 
-    <section class="main-content">
-
-        <aside class="sidebar">
-
-            <input class="target-city" type="text">
-            <div class="saved-cities">
-
-            </div>
-
-        </aside class="sidebar">
-
-        <div class="weather">
-
-            <div class="current-weather info">
-
-                <div class="current-city-date">
-                    <p class="city">San Diego</p> 
-                    <br>
-                    <p class="date">today</p>
-                </div>
-                <img class="current-weather-icon" src="">
-
-                <p class="temperature">Temperature: 100F</p>
-
-                <p class="humidity">Humidity: 35%</p>
-
-                <p class="wind-speed">Wind Speed: 4 MPH</p>
-
-                <p class="uv-index">UV Index: 5.3</p>
-
-            </div>   
-
-            <div class="forecast-weather">
-    
+    <section class="section columns main-content">
+        
+        <div class="column is-one-fifth">
+            <input class="input target-city" type="text" placeholder="Search Cities">
+            <div class="select is is-one-fifth is-multiple">
+                <select class="saved-cities is-fluid" multiple size="10">
+            </select>
             </div>
         </div>
+
+        <div class="weather container column">
+
+                <div class="current-weather info">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-128x128">
+                                <img class="current-weather-icon" src="" alt="Placeholder image">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content current-city-date">
+                                    <p class="title is-4 city">San Diego</p>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                <p class="temperature">Temperature: 100F</p>
+                                
+                                <p class="humidity">Humidity: 35%</p>
+                                
+                                <p class="wind-speed">Wind Speed: 4 MPH</p>
+                                
+                                <p class="uv-index"><span class="uv-index-span">UV Index: 5.3</span> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            
+            <div class="container forecast-weather column">
+                <!-- <div class=" column">
+                
+                </div> -->
+            </div>
 
     </section>
     

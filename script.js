@@ -9,6 +9,12 @@ let cityName = "san diego";
 // let UVindex;
 
 let tempUnit = ["metric", "imperial"]
+let tempUnitSelect = tempUnit[1]
+
+let tempDisplay;
+if (tempUnitSelect == "metric") {tempDisplay = " C"}
+if (tempUnitSelect == "imperial") {tempDisplay = " F"}
+
 
 // const weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
 
@@ -36,9 +42,9 @@ $("#calender-date").text(currentDate);
 function displayCurrentWeather(weatherData) {
     $(".current-city").text(weatherData.name)
     $(".date").text(moment().format("MMMM Do YYYY"));
-    $(".temperature").text(weatherData.main.temp + "")
-    $(".humidity").text(weatherData.main.humidity)
-    $(".wind-speed").text(weatherData.wind.speed)
+    $(".temperature").text("Temp: " + weatherData.main.temp + tempDisplay)
+    $(".humidity").text("Humidity: " + weatherData.main.humidity + "%")
+    $(".wind-speed").text("Wind: " + weatherData.wind.speed + " MPH")
 }
 
 
@@ -50,7 +56,18 @@ function getUVindexCurrent(longitude, latitude) {
     .then(function(resUV) {
         console.log(resUV)
         const uvIndex = resUV.value
-        $(".uv-index").text(uvIndex)
+        $(".uv-index-span").remove()
+        $(".uv-index").append($("<span>").addClass("uv-index-span"))
+        if (uvIndex <= 5) {
+            $(".uv-index-span").addClass("has-background-success")
+        }
+        else if (uvIndex > 5 && uvIndex <= 7) {
+            $(".uv-index-span").addClass("has-background-warning")
+        }
+        else {
+            $(".uv-index-span").addClass("has-background-danger")
+        }
+        $(".uv-index-span").text("UV Index: " + uvIndex)
         return uvIndex
     });
 }
@@ -84,33 +101,46 @@ function displayForecastWeather(x) {
     for (let i = 0; i < x; i++) {
         const newWeatherEl = ($("<div>").attr("id", "weather-" + i).addClass("info"));
         $(".forecast-weather").append(newWeatherEl);
-        const cityDateEl = ($("<div>").attr("id", "city-date-" + i));
-        newWeatherEl.append(cityDateEl)
-        const cityEl = ($("<p>").addClass("city"));
-        cityDateEl.append(cityEl);
-        const dateEl = ($("<p>").attr("id","date-" + i).text(moment().add(i + 1, "days").format("MMMM Do YYYY")));
-        cityDateEl.append($("<br>")).append(dateEl);
+
+        const newCard = ($("<div>").addClass("card"));
+        newWeatherEl.append(newCard);
+
+        const newCardContent = ($("<div>").addClass("card-content"));
+        newCard.append(newCardContent);
+        
+        const newMedia = ($("<div>").addClass("media"));
+        newCard.prepend(newMedia);
+        
+        const newMediaLeft = ($("<div>").addClass("media-left"));
+        newMedia.append(newMediaLeft);
+        
+        const newFigure = ($("<figure>").addClass("image is 64x64"));
+        newMediaLeft.append(newFigure);
+        
         const iconEl = ($("<img>").attr({id: "icon-" + i ,src: "#"}));
-        newWeatherEl.append(iconEl);
-        const tempEl = ($("<p>").attr("id", "temp-" + i));
-        newWeatherEl.append(tempEl);
-        const humidEl = ($("<p>").attr("id", "humid-" + i));
-        newWeatherEl.append(humidEl);
-        const windEl = ($("<p>").attr("id", "wind-" + i));
-        newWeatherEl.append(windEl);
-        const uvEl = ($("<p>").attr("id", "uv-" + i));
-        newWeatherEl.append(uvEl);
+        newFigure.append(iconEl);
+        
+        const newMediaContent = ($("<div>").addClass("media-content"));
+        newMediaLeft.append(newMediaContent);
+        
+        const dateEl = ($("<p>").attr("id","date-" + i).addClass("title is-4").text(moment().add(i + 1, "days").format("MMMM Do YYYY")));
+        newMedia.append($("<br>")).append(dateEl);
+        
+        const newContent = ($("<div>").addClass("content"));
+        newCardContent.append(newContent);
+        
+        const tempEl = ($("<p>").addClass("subtitle is-6").attr("id", "temp-humid-wind-" + i));
+        newContent.append(tempEl);
+
+        const uvEl = ($("<span>").addClass("subtitle is-6").attr("id", "uv-" + i));
+        newContent.append(uvEl);
     }
 }
 
 
 function populateWeatherForecast(x) {
     for (let i = 0; i < x.length; i++) {
-        //     const icon = "http://openweathermap.org/img/wn/" + x[i].weather.icon + "@2x.png"
-        //     $("#icon-" + i).attr("src", icon)   
-        $("#temp-" + i).before("Temp:").text(x[i].main.temp)
-        $("#humid-" + i).before("Humidity:").text(x[i].main.humidity)
-        $("#wind-" + i).before("Wind:").text(x[i].wind.speed)
+        $("#temp-humid-wind-" + i).text("Temp: " + x[i].main.temp + " | Humidity: " + x[i].main.humidity + " | Wind: " + x[i].wind.speed)
     }
     
 }
@@ -127,7 +157,7 @@ function sortForecast(forecastData) {
     }
     console.log(fiveDays)
     for (let i = 0; i < fiveDays.length; i++) {
-        const icon = "http://openweathermap.org/img/wn/" + fiveDays[i].weather.icon + "@2x.png"
+        const icon = "http://openweathermap.org/img/wn/" + fiveDays[i].weather[0].icon + "@2x.png"
         $("#icon-" + i).attr("src", icon)   
     }
     populateWeatherForecast(fiveDays)
@@ -149,7 +179,16 @@ function getUVindexForecast(longitude, latitude) {
         console.log(uvForecastData)
         // return uvForecastData;
         for (let i = 0; i < uvForecastData.length; i++) {
-            $("#uv-" + i).text(uvForecastData[i])
+            if (Number(uvForecastData[i]) <= 5) {
+                $("#uv-" + i).addClass("has-background-success")
+            }
+            else if (Number(uvForecastData[i]) > 5 && Number(uvForecastData[i]) <= 7) {
+                $("#uv-" + i).addClass("has-background-warning")
+            }
+            else {
+                $("#uv-" + i).addClass("has-background-danger")
+            }
+            $("#uv-" + i).val(uvForecastData[i]).text("UV Index: " + uvForecastData[i])
         }
     });
 }
@@ -173,6 +212,12 @@ getForecastWeatherAPI()
 
 
 // "2020-02-05 21:00:00"
+// let savedCities;
+
+
+    // TODO: add functionality to p tag clicks
+    // $(".saved-cities").children().on("click", function() {
+    // })
 
 $(document).ready(function() {
     let savedCities;
@@ -198,14 +243,15 @@ $(document).ready(function() {
         savedCityEl = $(".saved-cities")
         savedCityEl.empty();
         for (let i = 0; i < savedCities.length && i < 10; i++) {
-            const city = $("<p>").text(savedCities[i])
+            const city = $("<option>").val(savedCities[i]).text(savedCities[i])
             savedCityEl.append(city)
         }
     }
     displayCities()
 
-
-    // TODO: add functionality to p tag clicks
-    // $(".saved-cities").children().on("click", function() {
-    // })
-});
+    $("option").click(function(){
+        cityName = $(this).val()
+        getCurrentWeatherAPI();
+        getForecastWeatherAPI()
+    })
+});    
