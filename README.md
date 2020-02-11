@@ -1,5 +1,5 @@
 # Weather-Dashboard
-![Overview](/assets/images/pageOverview.png)
+![Overview](weatherdashboard.png)
 
 ## Who made this project?
 
@@ -16,4 +16,4 @@ This project was created to practice using third-party API's in web applications
 
 ### Guide
 
-Type in the name of a city and hit enter to see current and future weather.
+Type in the name of a city and press enter to see current and future weather.
