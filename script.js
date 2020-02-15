@@ -16,17 +16,17 @@ if (tempUnitSelect == "metric") {tempDisplay = " C"}
 if (tempUnitSelect == "imperial") {tempDisplay = " F"}
 
 
-// const weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
+// const weatherIconUrl = "https://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
 
 
 // Variables for API query calls
-const currentWeatherAPI = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey;
+const currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey;
 
-const fiveDayForecastAPI = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey;
+const fiveDayForecastAPI = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey;
 
-// const uvIndexCurrentAPI = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
+// const uvIndexCurrentAPI = "https://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
 
-// const uvIndexForecastAPI = "http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5"
+// const uvIndexForecastAPI = "https://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=5"
 
 
 // Momentjs for calender date
@@ -52,7 +52,7 @@ function displayCurrentWeather(weatherData) {
 function getUVindexCurrent(longitude, latitude) {
     lon = longitude;
     lat = latitude;
-    $.get("http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon)
+    $.get("https://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon)
     .then(function(resUV) {
         console.log(resUV);
         const uvIndex = resUV.value;
@@ -74,13 +74,13 @@ function getUVindexCurrent(longitude, latitude) {
 
 // Ajax call for current weather
 function getCurrentWeatherAPI() {
-    $.get("http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
+    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
     .then(function(res) {
         // console.log(res)
         lon = res.coord.lon;
         lat = res.coord.lat;
         // console.log(res);
-        const icon = "http://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png";
+        const icon = "https://openweathermap.org/img/wn/" + res.weather[0].icon + "@2x.png";
         $(".current-weather-icon").attr("src", icon);
         // console.log(icon)
         // lat = lat;
@@ -158,7 +158,7 @@ function sortForecast(forecastData) {
     }
     console.log(fiveDays);
     for (let i = 0; i < fiveDays.length; i++) {
-        const icon = "http://openweathermap.org/img/wn/" + fiveDays[i].weather[0].icon + "@2x.png";
+        const icon = "https://openweathermap.org/img/wn/" + fiveDays[i].weather[0].icon + "@2x.png";
         $("#icon-" + i).attr("src", icon);
     }
     populateWeatherForecast(fiveDays);
@@ -170,7 +170,7 @@ function sortForecast(forecastData) {
 function getUVindexForecast(longitude, latitude) {
     lon = longitude;
     lat = latitude;
-    $.get("http://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=4")
+    $.get("https://api.openweathermap.org/data/2.5/uvi/forecast?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon + "&cnt=4")
     .then(function(resUV) {
         const uvForecastData = [];
         for (let i = 0; i < resUV.length; i++) {
@@ -198,9 +198,9 @@ function getUVindexForecast(longitude, latitude) {
 // Function call for five day weather forecast
 function getForecastWeatherAPI() {
     displayForecastWeather(5);
-    $.get("http://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
+    $.get("https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=" + tempUnit[1] + "&APPID=" + apiKey)
     .then(function(res) {
-        // res.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict")
+        // res.setHeader("Set-Cookie", "HttpsOnly;Secure;SameSite=Strict")
         $(".city").text(res.city.name);
         lon = res.city.coord.lon;
         lat = res.city.coord.lat;
