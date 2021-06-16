@@ -1,4 +1,4 @@
-var compression = require('compression')
+// var compression = require('compression')
 
 // Creating variables
 const apiKey = "c27ba2815803926d4006fd773d06f781";
